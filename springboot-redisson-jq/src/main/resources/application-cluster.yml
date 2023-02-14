@@ -1,0 +1,48 @@
+﻿server:
+  port: 7370
+  tomcat:
+    uri-encoding: utf-8
+  servlet:
+    context-path: /
+spring:
+  application:
+    name: SPRINGBOOT-REDISSON
+  main:
+    allow-bean-definition-overriding: true
+  #  redisson 的cluster配置  需要在redis.conf配置文件中  去掉 # cluster-enabled yes  中 的 “#”
+  redisson:
+    type: cluster
+    cluster:
+      idleConnectionTimeout: 10000
+      pingTimeout: 10000
+      connectTimeout: 10000
+      timeout: 30000
+      retryAttempts: 5
+      retryInterval: 5000
+      reconnectionTimeout: 3000
+      failedAttempts: 3
+      password:
+      subscriptionsPerConnection: 5
+      clientName: null
+      #loadBalancer: org.redisson.connection.balancer.RoundRobinLoadBalancer
+      slaveSubscriptionConnectionMinimumIdleSize: 1
+      slaveSubscriptionConnectionPoolSize: 50
+      slaveConnectionMinimumIdleSize: 32
+      slaveConnectionPoolSize: 64
+      masterConnectionMinimumIdleSize: 32
+      masterConnectionPoolSize: 64
+      readMode: "SLAVE"
+      nodeAddresses:
+        - "redis://127.0.0.1:6379"
+      scanInterval: 1000
+      threads: 0
+      nettyThreads: 0
+      transportMode: "NIO"
+      subscriptionConnectionMinimumIdleSize: 1
+      subscriptionConnectionPoolSize: 1800
+      connectionPoolSize: 2000
+      database: 0
+      dnsMonitoring: false
+      dnsMonitoringInterval: 5000
+      codec: org.redisson.codec.JsonJacksonCodec
+

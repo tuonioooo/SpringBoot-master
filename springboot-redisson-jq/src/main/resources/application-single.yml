@@ -1,0 +1,34 @@
+﻿server:
+  port: 7370
+  tomcat:
+    uri-encoding: utf-8
+  servlet:
+    context-path: /
+spring:
+  application:
+    name: SPRINGBOOT-REDISSON
+  main:
+    allow-bean-definition-overriding: true
+  #  redisson 的单机版配置
+  redisson:
+    type: single
+    single:
+      address: "redis://localhost:6379"
+      connectionMinimumIdleSize: 10
+      idleConnectionTimeout: 10000
+      pingTimeout: 10000
+      connectTimeout: 10000
+      timeout: 30000
+      retryAttempts: 5
+      retryInterval: 5000
+      password:
+      subscriptionsPerConnection: 5
+      clientName: null
+      subscriptionConnectionMinimumIdleSize: 1
+      subscriptionConnectionPoolSize: 1800
+      connectionPoolSize: 2000
+      database: 0
+      dnsMonitoring: false
+      dnsMonitoringInterval: 5000
+      codec: org.redisson.codec.JsonJacksonCodec
+
