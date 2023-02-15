@@ -1,0 +1,89 @@
+﻿server:
+  port: 9190
+  tomcat:
+    uri-encoding: utf-8
+  servlet:
+    context-path: /
+spring:
+  jpa:
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true  # 解决 could not initialize proxy - no Session
+  application:
+    name: OPTIMISTIC-LOCK
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+    username: root
+    password: root
+  http:
+    encoding:
+      charset: utf-8
+      force: true
+      enabled: true
+  #  redis 的单机版配置
+  redis:
+    database: 15
+    host: localhost
+    port: 6379
+    #password:
+    timeout: 3600ms
+    lettuce:
+      pool:
+        max-active: 10 #最大连接数
+        max-idle: 8 #最大空闲连接 默认8
+        max-wait: -1ms #默认-1 最大连接阻塞等待时间
+        min-idle: 0 #最小空闲连接
+  #  redisson 的单机版配置
+  redisson:
+    type: single
+    single:
+      address: "redis://localhost:6379"
+      #address: "redis://122.114.70.115:6278"
+      connectionMinimumIdleSize: 10
+      idleConnectionTimeout: 10000
+      pingTimeout: 10000
+      connectTimeout: 10000
+      timeout: 30000
+      retryAttempts: 5
+      retryInterval: 5000
+      #password: vHlvVgq9Za
+      subscriptionsPerConnection: 5
+      clientName: null
+      subscriptionConnectionMinimumIdleSize: 1
+      subscriptionConnectionPoolSize: 1800
+      connectionPoolSize: 2000
+      database: 15
+      dnsMonitoring: false
+      dnsMonitoringInterval: 5000
+      codec: org.redisson.codec.JsonJacksonCodec
+# mybatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.optimistic.master.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    #输出mybatis sql日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# restart 类加载加载 include 进去的 jar 包。
+restart:
+  include:
+    mapper: /mapper-[\w-\.]+jar
+    pagehelper: /pagehelper-[\w-\.]+jar
+# mappers 多个接口时逗号隔开
+mapper:
+  not-empty: false
+  identity: MYSQL
+
+#pagehelper 分页插件与自动配置不冲突，自动配置类会优先加载此属性
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+# 输出 mybatis SQL 日志级别
+logging.level.net.codingme.boot.domain.mapper: debug
+

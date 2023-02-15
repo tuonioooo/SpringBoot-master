@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d %-5level %t %logger{1}] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- System log -->
+    <appender name="file.log.sys"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>./logs/ing/sys.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./logs/sys/%d{yyyyMMdd}.sys.log
+            </fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d %-5level %t %logger{1}] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file.log.task" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <!--discriminator鉴别器，根据jobGroup这个key对应的value鉴别日志事件，然后委托给具体appender写日志-->
+        <discriminator>
+            <key>jobGroup</key>
+            <defaultValue>default</defaultValue><!--默认输出目录，如果jobGroup不存在就输入到这个文件中-->
+        </discriminator>
+        <sift>
+            <!--具体的写日志appender，每一个jobGroup创建一个文件-->
+            <appender name="file-${jobGroup}" class="ch.qos.logback.core.FileAppender">
+                <file>./logs/cron/${jobGroup}.log</file>
+                <append>true</append>
+                <encoder charset="UTF-8">
+                    <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] - %msg%n</pattern>
+                    <!--<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level %logger{35} - %msg%n</pattern>-->
+                </encoder>
+            </appender>
+        </sift>
+    </appender>
+
+
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="file.log.sys"/>
+        <appender-ref ref="stdout"/>
+    </root>
+
+</configuration>
